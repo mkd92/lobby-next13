@@ -1,24 +1,25 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { MutableRefObject, RefObject, useRef } from "react";
+import React, { MutableRefObject, RefObject, useEffect, useRef } from "react";
 import LoginForm from "./LoginForm";
 import { auth, provider } from "../utils/firebase/firebase.config";
 import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
 import { selectUser, updateUser } from "../utils/redux/auth/authSlice";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Navbar() {
   const modal: RefObject<HTMLInputElement> = useRef(null);
-  const usr = useAppSelector(selectUser);
+  const [usr, loading] = useAuthState(auth);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const googleLogin = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const credentials = GoogleAuthProvider.credentialFromResult(result);
-        const token = credentials?.accessToken;
-        const user = result.user;
-        dispatch(updateUser(user));
+        // const token = credentials?.accessToken;
+        // const user = result.user;
+        // dispatch(updateUser(user));
         router.push("/");
         if (modal.current?.checked) {
           modal.current.checked = !modal.current.checked;
@@ -36,6 +37,15 @@ function Navbar() {
       dispatch(updateUser(null));
     });
   };
+  useEffect(() => {
+    if (usr) {
+      dispatch(updateUser({ uid: usr.uid }));
+    } else {
+      dispatch(updateUser(null));
+    }
+    return () => {};
+  }, [usr]);
+
   return (
     <div className="navbar bg-base-100">
       {/* Modal */}

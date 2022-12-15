@@ -3,7 +3,7 @@ import { User } from "firebase/auth";
 import { RootState } from "../store";
 
 interface AuthState {
-  user: null | User;
+  user: null | string;
 }
 
 const initialState: AuthState = {
@@ -15,7 +15,11 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     updateUser: (state, { payload }) => {
-      state.user = payload;
+      if (payload) {
+        state.user = payload.uid;
+      } else {
+        state.user = null;
+      }
     },
   },
 });
