@@ -21,10 +21,13 @@ export const authSlice = createSlice({
         state.user = null;
       }
     },
+    logout: (state) => {
+      state.user = null;
+    },
   },
 });
 
-export const { updateUser } = authSlice.actions;
+export const { updateUser, logout } = authSlice.actions;
 export const selectUser = (state: RootState) => state.auth.user;
 
 export default authSlice.reducer;
