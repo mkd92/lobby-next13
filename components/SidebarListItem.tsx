@@ -15,9 +15,9 @@ const SidebarListItem = ({
   const sidebarOpen = useAppSelector(selectSidebarOpen);
   return (
     <li
-      className={`bg-gray-600 font-semibold rounded-md m-4 p-4 duration-200 ${
+      className={`bg-white shadow-lg font-semibold rounded-md m-4 p-4 duration-200 ${
         !sidebarOpen && "rounded-full m-2 p-2"
-      } hover:bg-gray-500 cursor-pointer hover:text-gray-800`}
+      } hover:bg-textLight cursor-pointer hover:text-bgLight`}
     >
       <Link href={href}>
         <div className="flex justify-center items-center">

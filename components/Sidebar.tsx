@@ -14,6 +14,7 @@ import { auth } from "../utils/firebase/firebase.config";
 import { signOut } from "firebase/auth";
 import { logout } from "../utils/redux/auth/authSlice";
 import SidebarContent from "./SidebarContent";
+import Image from "next/image";
 const Sidebar = () => {
   const sidebarOpen = useAppSelector(selectSidebarOpen);
   const modalOpen = useAppSelector(selectModalOpen);
@@ -64,15 +65,15 @@ const Sidebar = () => {
             viewBox="0 0 20 43"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={`w-3`}
+            className={`w-3 text-textLight`}
           >
             <path
               d="M0.528412 43V13.9091H6.67898V37.929H19.1506V43H0.528412Z"
-              fill="white"
+              fill="#344767"
             />
             <path
               d="M19.6222 1.628e-06L19.6222 29.0909H13.4716L13.4716 5.07102L1 5.07102L1 0L19.6222 1.628e-06Z"
-              fill="white"
+              fill="#344767"
             />
           </svg>
           <div className={`ml-2 duration-200 ${!sidebarOpen && "scale-0 w-0"}`}>
@@ -81,17 +82,20 @@ const Sidebar = () => {
         </div>
         {user ? (
           <div
-            className={`bg-gray-600 font-semibold rounded-md m-4 p-4 duration-200 ${
+            className={`bg-white shadow-lg font-semibold rounded-md m-4 p-4 duration-200 ${
               !sidebarOpen && "rounded-full m-2 p-2"
-            } hover:bg-gray-500 cursor-pointer hover:text-gray-800`}
+            } hover:bg-textLight cursor-pointer hover:text-bgLight`}
           >
             <div className="flex justify-center items-center">
-              <img
-                className="h-10 w-10 rounded-full"
+              <Image
+                className=" rounded-full"
+                width={50}
+                height={50}
                 src={
                   user.photoURL
                     ? user.photoURL
                     : `https://avatars.dicebear.com/api/adventurer/${user.displayName}.svg`
+                  // TODO: add this to the nextjs Config
                 }
                 alt=""
               />
@@ -100,21 +104,19 @@ const Sidebar = () => {
           </div>
         ) : (
           <div
-            className={`bg-gray-600 rounded-md m-4 p-4 duration-200 font-semibold hover:text-gray-800 ${
+            className={`bg-white rounded-md m-4 p-4 duration-200 font-semibold  ${
               !sidebarOpen && "rounded-full"
-            } hover:bg-gray-500 cursor-pointer`}
+            } hover:bg-textLight cursor-pointer hover:text-bgLight`}
             onClick={onModalToggle}
           >
             {!sidebarOpen ? <BiLockAlt /> : <div>Login</div>}
           </div>
         )}
-        <div className="flex-grow">
-          <SidebarContent />
-        </div>
+        <div className="flex-grow">{user && <SidebarContent />}</div>
 
         {user && (
           <div
-            className={`bg-gray-600 rounded-md m-4 flex p-2 justify-center items-center duration-200 hover:bg-gray-500 cursor-pointer hover:text-gray-800 ${
+            className={`bg-bgLight shadow-lg rounded-md m-4 flex p-2 justify-center items-center duration-200 hover:bg-textLight cursor-pointer hover:text-bgLight ${
               !sidebarOpen && "rounded-full"
             }`}
             onClick={onLogoutHandler}
